@@ -1,0 +1,6 @@
+# Im Repo immer LF. Das Projekt wird auf einem Linux-Pi ausgecheckt, und
+# systemd-Units sowie Shell-Skripte vertragen keine CRLF-Zeilenenden.
+* text=auto eol=lf
+
+# Binärdateien unangetastet lassen
+*.png binary
