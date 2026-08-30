@@ -1,0 +1,23 @@
+{
+  "name": "Stockkarte",
+  "short_name": "Stockkarte",
+  "description": "Digitale Stockkarte für die Imkerei — Kontrollen, Honig und Behandlungen am Bienenstand erfassen.",
+  "lang": "de",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F7F2E8",
+  "theme_color": "#F7F2E8",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Stock scannen", "short_name": "Scannen", "url": "/scan" },
+    { "name": "Völker", "short_name": "Völker", "url": "/voelker" }
+  ]
+}

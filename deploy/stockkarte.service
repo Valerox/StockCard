@@ -1,0 +1,62 @@
+# systemd-Dienst für die Stockkarte auf dem Raspberry Pi.
+#
+# Installieren:
+#   sudo cp deploy/stockkarte.service /etc/systemd/system/
+#   sudo nano /etc/systemd/system/stockkarte.service   # Benutzer/Pfad prüfen
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now stockkarte
+#
+# Log ansehen:  journalctl -u stockkarte -f
+
+[Unit]
+Description=Stockkarte — digitale Stockkarte für die Imkerei
+Documentation=https://github.com/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# Benutzer und Pfad anpassen, falls nicht der Standardbenutzer "pi" genutzt wird
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/stockkarte
+
+ExecStart=/usr/bin/node server/server.js
+
+Environment=NODE_ENV=production
+Environment=PORT=8080
+# Nur lokal lauschen, weil Cloudflared auf demselben Gerät läuft.
+# Für den direkten Zugriff aus dem Heimnetz stattdessen 0.0.0.0 eintragen.
+Environment=STOCKKARTE_HOST=127.0.0.1
+
+# Passwort beim allerersten Start setzen. Danach diese Zeile wieder entfernen —
+# geändert wird das Passwort anschließend in den Einstellungen der App.
+# Environment=STOCKKARTE_PASSWORT=hier-ein-gutes-passwort
+
+# Neustart bei Absturz, mit Pause, damit eine Startschleife nicht die SD-Karte quält
+Restart=on-failure
+RestartSec=5
+
+# Ausgabe landet im journal
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=stockkarte
+
+# --- Absicherung ---
+# Die App braucht nur ihr eigenes Verzeichnis, sonst nichts.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/pi/stockkarte/data
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+
+[Install]
+WantedBy=multi-user.target

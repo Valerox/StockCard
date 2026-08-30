@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="4d6da5f4-383c-4f16-a608-dfac2bb76293"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas">
+<style>
+html,body{margin:0;padding:0}
+body{background:#E9E2D3;font-family:system-ui,-apple-system,sans-serif;color:#423E37;-webkit-font-smoothing:antialiased}
+a{color:#8C6A1F;text-decoration:underline}
+a:hover{color:#423E37}
+*{box-sizing:border-box}
+::-webkit-scrollbar{width:0;height:0}
+@keyframes scanline{0%{transform:translateY(0)}50%{transform:translateY(206px)}100%{transform:translateY(0)}}
+@keyframes pulseDot{0%,100%{opacity:.35}50%{opacity:1}}
+</style></helmet>
+
+
+
+<div style="display:flex;align-items:flex-start;gap:56px;padding:56px 64px 80px">
+
+<div style="width:400px;flex:none;padding-top:8px">
+  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:22px">
+    <span style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;padding:5px 8px;background:#423E37;color:#F7F2E8;border-radius:4px">1a</span>
+    <span style="font:500 12px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.5)">Stockkarte · klickbarer Prototyp</span>
+  </div>
+
+  <h1 style="font:400 40px/1.05 Georgia,ui-serif,serif;margin:0 0 14px;letter-spacing:-.01em">Die Stockkarte,<br>aber in der Tasche.</h1>
+  <p style="font:400 14px/1.6 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.68);margin:0 0 34px;text-wrap:pretty">Ein-Hand-Bedienung am Stand: QR am Stock scannen, Kontrolle in vier Taps erfassen, offline speichern. Tippe im Telefon herum — alles rechts ist echt bedienbar.</p>
+
+  <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:12px">VON PAPIER NACH APP</div>
+  <div style="display:flex;flex-direction:column;gap:1px;background:rgba(66,62,55,.12);border:1px solid rgba(66,62,55,.12);border-radius:8px;overflow:hidden;margin-bottom:34px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(66,62,55,.12)">
+      <div style="background:#F3EDE0;padding:9px 12px;font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;color:rgba(66,62,55,.5)">PAPIERFELD</div>
+      <div style="background:#F3EDE0;padding:9px 12px;font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;color:rgba(66,62,55,.5)">IN DER APP</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(66,62,55,.12)">
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif">Volk Nr. / Name · Stand · Jahr</div>
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.7)">Kartenkopf + QR am Stock</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(66,62,55,.12)">
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif">Königin · Stifte · Made · verd. Brut · Pollen · Futter</div>
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.7)">Sechs Umschalter pro Kontrolle, als Zeile lesbar wie das Raster</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(66,62,55,.12)">
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif">Honigraum rauf / runter · Honigwaben entnommen</div>
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.7)">Reiter „Honig“ mit Datum + Stück</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(66,62,55,.12)">
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif">Behandelt am</div>
+      <div style="background:#FFFCF5;padding:10px 12px;font:400 12.5px/1.4 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.7)">Reiter „Behandlung“ — Mittel + Menge, exportfähig</div>
+    </div>
+  </div>
+
+  <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:12px">ENTSCHEIDUNGEN</div>
+  <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:34px">
+    <div style="display:flex;gap:11px"><span style="width:5px;height:5px;border-radius:99px;background:#E3B23C;margin-top:6px;flex:none"></span><span style="font:400 13px/1.55 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.75)"><b style="font-weight:600;color:#423E37">Offline zuerst.</b> Gespeichert wird immer lokal; die Wolke ist nur ein Nachtrag. Der Zähler im Kopf zeigt, was noch wartet.</span></div>
+    <div style="display:flex;gap:11px"><span style="width:5px;height:5px;border-radius:99px;background:#E3B23C;margin-top:6px;flex:none"></span><span style="font:400 13px/1.55 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.75)"><b style="font-weight:600;color:#423E37">Scan ohne Zwischenschritt.</b> Der QR am Deckel öffnet die Stockkarte des gescannten Volkes direkt — keine Bestätigung, kein Dialog.</span></div>
+    <div style="display:flex;gap:11px"><span style="width:5px;height:5px;border-radius:99px;background:#E3B23C;margin-top:6px;flex:none"></span><span style="font:400 13px/1.55 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.75)"><b style="font-weight:600;color:#423E37">Das Raster bleibt.</b> Eine Kontrolle ist eine Zeile aus sechs Merkmalen — genau wie auf dem Karton, nur größer als der Handschuh.</span></div>
+    <div style="display:flex;gap:11px"><span style="width:5px;height:5px;border-radius:99px;background:#E3B23C;margin-top:6px;flex:none"></span><span style="font:400 13px/1.55 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.75)"><b style="font-weight:600;color:#423E37">Ziffern in Mono.</b> Daten und Stückzahlen sollen sich beim Überfliegen untereinander ausrichten.</span></div>
+  </div>
+
+  <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:12px">OFFEN / NÄCHSTE SCHRITTE</div>
+  <p style="font:400 13px/1.6 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6);margin:0;text-wrap:pretty">Volk 9 ist 1:1 von deiner Karte übernommen (18.4. / 20.6. / 29.8., Honigwaben 4.6. + 3.7.) — sag mir, ob ich die Kreuze richtig gelesen habe. Fehlt noch: Behandlungsmittel-Liste, Wanderung/Standwechsel, Ableger-Verknüpfung („aus Volk 9“) und wie die Völker auf dem Stand angeordnet sind.</p>
+</div>
+
+<div style="flex:none">
+<div style="position:relative;width:402px;height:874px;flex:none">
+<div style="position:absolute;left:-11px;top:-11px;right:-11px;bottom:-11px;border-radius:67px;background:#1B1916;box-shadow:0 26px 64px rgba(40,34,26,.3)"></div>
+<div style="position:absolute;left:0;top:0;right:0;bottom:0;border-radius:56px;overflow:hidden;background:#F7F2E8">
+
+<div style="position:relative;height:100%;background:#F7F2E8;display:flex;flex-direction:column;overflow:hidden">
+
+<sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#191713;z-index:1"></div>
+</sc-if>
+
+<sc-if value="{{ isScan }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;z-index:3;height:100%;display:flex;flex-direction:column;padding:62px 20px 0">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+    <div style="font:500 17px/1.2 system-ui,-apple-system,sans-serif;color:#F7F2E8">Stock scannen</div>
+    <div sc-camel-on-click="{{ goVoelker }}" style="font:500 13px/1 system-ui,-apple-system,sans-serif;color:#E3B23C;padding:10px 4px;cursor:pointer">Abbrechen</div>
+  </div>
+  <div style="font:400 12.5px/1.5 system-ui,-apple-system,sans-serif;color:rgba(247,242,232,.55);margin-bottom:26px">QR-Code am Deckel ins Bild halten — die Karte öffnet sich sofort.</div>
+
+  <div style="position:relative;width:100%;height:262px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 50% 20%, #3A342A 0%, #14120F 100%);cursor:pointer" sc-camel-on-click="{{ doScan }}">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(115deg, rgba(255,255,255,.028) 0 2px, transparent 2px 9px)"></div>
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;border-radius:14px;background:rgba(227,178,60,.05)"></div>
+    <div style="position:absolute;left:calc(50% - 75px);top:calc(50% - 75px);width:34px;height:34px;border-top:2.5px solid #E3B23C;border-left:2.5px solid #E3B23C;border-radius:12px 0 0 0"></div>
+    <div style="position:absolute;left:calc(50% + 41px);top:calc(50% - 75px);width:34px;height:34px;border-top:2.5px solid #E3B23C;border-right:2.5px solid #E3B23C;border-radius:0 12px 0 0"></div>
+    <div style="position:absolute;left:calc(50% - 75px);top:calc(50% + 41px);width:34px;height:34px;border-bottom:2.5px solid #E3B23C;border-left:2.5px solid #E3B23C;border-radius:0 0 0 12px"></div>
+    <div style="position:absolute;left:calc(50% + 41px);top:calc(50% + 41px);width:34px;height:34px;border-bottom:2.5px solid #E3B23C;border-right:2.5px solid #E3B23C;border-radius:0 0 12px 0"></div>
+    <div style="position:absolute;left:24px;right:24px;top:28px;height:2px;background:linear-gradient(90deg,transparent,#E3B23C,transparent);animation:scanline 2.6s ease-in-out infinite"></div>
+    <div style="position:absolute;left:0;right:0;bottom:18px;text-align:center;font:400 11.5px/1 system-ui,-apple-system,sans-serif;color:rgba(247,242,232,.5)">Tippe zum Simulieren</div>
+  </div>
+
+  <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px">
+    <div sc-camel-on-click="{{ doScan }}" style="padding:15px;border-radius:12px;background:#E3B23C;color:#423E37;text-align:center;font:600 14px/1 system-ui,-apple-system,sans-serif;cursor:pointer">Code lesen</div>
+    <div sc-camel-on-click="{{ goVoelker }}" style="text-align:center;font:400 11.5px/1.5 system-ui,-apple-system,sans-serif;color:rgba(247,242,232,.4);margin-top:6px;cursor:pointer">Kein QR am Stock? <span style="color:#E3B23C">Volk manuell wählen</span></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isUeber }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;z-index:2;flex:1;overflow:auto;padding:60px 0 116px">
+  <div style="padding:0 20px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px">
+      <div>
+        <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:9px">SONNTAG, 30. AUGUST</div>
+        <div style="font:400 34px/1.05 Georgia,ui-serif,serif;letter-spacing:-.01em">Guten Morgen,<br>Imkerei Weiler.</div>
+      </div>
+      <div style="width:38px;height:38px;border-radius:99px;background:#423E37;color:#F7F2E8;display:flex;align-items:center;justify-content:center;font:500 13px/1 ui-monospace,Menlo,Consolas,monospace;flex:none;margin-top:14px">MW</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showOffline }}" hint-placeholder-val="{{ true }}">
+  <div style="margin:24px 20px 0;padding:13px 15px;border-radius:12px;background:#FFFCF5;border:1px solid rgba(66,62,55,.12);display:flex;align-items:center;gap:12px">
+    <span style="width:8px;height:8px;border-radius:99px;background:#E3B23C;flex:none;animation:pulseDot 1.8s ease-in-out infinite"></span>
+    <div style="flex:1;min-width:0">
+      <div style="font:500 12.5px/1.3 system-ui,-apple-system,sans-serif">Offline gespeichert</div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:2px">{{ pendingLabel }} · synchronisiert bei Netz</div>
+    </div>
+    <div sc-camel-on-click="{{ sync }}" style="font:500 12px/1 system-ui,-apple-system,sans-serif;color:#8C6A1F;padding:8px 2px;cursor:pointer;flex:none">Jetzt</div>
+  </div>
+  </sc-if>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 20px 0">
+    <div style="padding:16px;border-radius:14px;background:#FFFCF5;border:1px solid rgba(66,62,55,.1)">
+      <div style="font:400 30px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:-.02em">12</div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:7px">Völker auf 2 Ständen</div>
+    </div>
+    <div style="padding:16px;border-radius:14px;background:#FFFCF5;border:1px solid rgba(66,62,55,.1)">
+      <div style="font:400 30px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:-.02em">84<span style="font-size:15px;color:rgba(66,62,55,.5)"> kg</span></div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:7px">Honig 2026</div>
+    </div>
+    <div style="padding:16px;border-radius:14px;background:#423E37;color:#F7F2E8">
+      <div style="font:400 30px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:-.02em">3</div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(247,242,232,.6);margin-top:7px">Kontrollen fällig</div>
+    </div>
+    <div style="padding:16px;border-radius:14px;background:#FFFCF5;border:1px solid rgba(66,62,55,.1)">
+      <div style="font:400 30px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:-.02em;color:#8C4A2F">1</div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:7px">Volk tot gemeldet</div>
+    </div>
+  </div>
+
+  <div sc-camel-on-click="{{ goScan }}" style="margin:10px 20px 0;padding:17px 18px;border-radius:14px;background:#E3B23C;display:flex;align-items:center;gap:13px;cursor:pointer">
+    <div style="width:34px;height:34px;border-radius:9px;border:2px solid #423E37;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;padding:4px;flex:none">
+      <span style="background:#423E37;border-radius:1px"></span><span style="background:rgba(66,62,55,.25);border-radius:1px"></span><span style="background:rgba(66,62,55,.25);border-radius:1px"></span><span style="background:#423E37;border-radius:1px"></span>
+    </div>
+    <div style="flex:1">
+      <div style="font:600 15px/1.2 system-ui,-apple-system,sans-serif">Stock scannen</div>
+      <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6);margin-top:3px">QR am Deckel → Karte öffnet sich</div>
+    </div>
+    <span style="font:400 20px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.45)">›</span>
+  </div>
+
+  <div style="margin:34px 20px 12px;display:flex;align-items:baseline;justify-content:space-between">
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45)">FÄLLIG DIESE WOCHE</div>
+    <div sc-camel-on-click="{{ goVoelker }}" style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;color:#8C6A1F;cursor:pointer">alle Völker</div>
+  </div>
+  <div style="margin:0 20px;border:1px solid rgba(66,62,55,.1);border-radius:14px;background:#FFFCF5;overflow:hidden">
+    <sc-for list="{{ faellig }}" as="v" hint-placeholder-count="3">
+      <div sc-camel-on-click="{{ v.open }}" style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid rgba(66,62,55,.08);cursor:pointer">
+        <div style="width:34px;height:34px;border-radius:9px;background:#F3EDE0;display:flex;align-items:center;justify-content:center;font:500 14px/1 ui-monospace,Menlo,Consolas,monospace;flex:none">{{ v.nr }}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font:500 14px/1.25 system-ui,-apple-system,sans-serif">{{ v.name }}</div>
+          <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:2px">{{ v.hint }}</div>
+        </div>
+        <div style="font:400 11px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.45);flex:none">{{ v.tage }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin:30px 20px 12px;font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45)">ZULETZT ERFASST</div>
+  <div style="margin:0 20px;display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ recent }}" as="r" hint-placeholder-count="3">
+      <div style="display:flex;gap:12px;align-items:baseline">
+        <span style="font:400 11.5px/1.5 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.45);width:42px;flex:none">{{ r.datum }}</span>
+        <span style="font:400 13px/1.5 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.75);text-wrap:pretty">{{ r.text }}</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVoelker }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;z-index:2;flex:1;overflow:auto;padding:60px 0 116px">
+  <div style="padding:0 20px 18px">
+    <div style="font:400 34px/1.05 Georgia,ui-serif,serif;margin-bottom:16px">Völker</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:11px;background:#FFFCF5;border:1px solid rgba(66,62,55,.12)">
+      <span style="width:13px;height:13px;border:1.5px solid rgba(66,62,55,.4);border-radius:99px;flex:none"></span>
+      <span style="font:400 13.5px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.4)">Nummer, Name oder Stand</span>
+    </div>
+    <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">
+      <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#423E37;color:#F7F2E8">Alle · 12</span>
+      <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)">Weiler · 7</span>
+      <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)">Hausgarten · 5</span>
+    </div>
+  </div>
+  <div style="margin:0 20px;border:1px solid rgba(66,62,55,.1);border-radius:14px;background:#FFFCF5;overflow:hidden">
+    <sc-for list="{{ voelker }}" as="v" hint-placeholder-count="6">
+      <div sc-camel-on-click="{{ v.open }}" style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid rgba(66,62,55,.08);cursor:pointer">
+        <div style="width:36px;height:36px;border-radius:9px;background:#F3EDE0;display:flex;align-items:center;justify-content:center;font:500 15px/1 ui-monospace,Menlo,Consolas,monospace;flex:none">{{ v.nr }}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="font:500 14px/1.25 system-ui,-apple-system,sans-serif">{{ v.name }}</span>
+            <span style="width:7px;height:7px;border-radius:99px;background:{{ v.dot }};flex:none"></span>
+          </div>
+          <div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:3px">{{ v.meta }}</div>
+        </div>
+        <span style="font:400 18px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.3);flex:none">›</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isKarte }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;z-index:2;flex:1;overflow:auto;padding:56px 0 116px">
+  <div style="padding:0 20px">
+    <div sc-camel-on-click="{{ goVoelker }}" style="font:500 12.5px/1 system-ui,-apple-system,sans-serif;color:#8C6A1F;padding:8px 0 14px;cursor:pointer">‹ Völker</div>
+    <div style="border:1px solid rgba(66,62,55,.16);border-radius:14px;background:#FFFCF5;overflow:hidden">
+      <div style="padding:16px 16px 14px;border-bottom:1px solid rgba(66,62,55,.14)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div>
+            <div style="font:500 22px/1.1 Georgia,ui-serif,serif;border-bottom:1.5px solid #423E37;display:inline-block;padding-bottom:2px">Stockkarte</div>
+            <div style="font:400 12px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.5);margin-top:9px">JAHR {{ jahr }}</div>
+          </div>
+          <div sc-camel-on-click="{{ goScan }}" style="width:36px;height:36px;border-radius:9px;border:1.5px solid rgba(66,62,55,.25);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;padding:6px;cursor:pointer;flex:none">
+            <span style="background:#423E37;border-radius:1px"></span><span style="background:rgba(66,62,55,.25);border-radius:1px"></span><span style="background:rgba(66,62,55,.25);border-radius:1px"></span><span style="background:#423E37;border-radius:1px"></span>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:13px 16px;border-right:1px solid rgba(66,62,55,.14);border-bottom:1px solid rgba(66,62,55,.14)">
+          <div style="font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.09em;color:rgba(66,62,55,.45);margin-bottom:6px">VOLK NR. / NAME</div>
+          <div style="font:500 17px/1.2 system-ui,-apple-system,sans-serif">{{ volkNr }} · {{ volkName }}</div>
+        </div>
+        <div style="padding:13px 16px;border-bottom:1px solid rgba(66,62,55,.14)">
+          <div style="font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.09em;color:rgba(66,62,55,.45);margin-bottom:6px">STAND</div>
+          <div style="font:500 17px/1.2 system-ui,-apple-system,sans-serif">{{ volkStand }}</div>
+        </div>
+        <div style="padding:13px 16px;border-right:1px solid rgba(66,62,55,.14)">
+          <div style="font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.09em;color:rgba(66,62,55,.45);margin-bottom:6px">KÖNIGIN</div>
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="width:11px;height:11px;border-radius:99px;background:#5E7B45;border:1px solid rgba(66,62,55,.25)"></span>
+            <span style="font:500 15px/1.2 system-ui,-apple-system,sans-serif">2024 · grün</span>
+          </div>
+        </div>
+        <div style="padding:13px 16px">
+          <div style="font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.09em;color:rgba(66,62,55,.45);margin-bottom:6px">STATUS</div>
+          <div style="font:500 15px/1.2 system-ui,-apple-system,sans-serif;color:{{ statusColor }}">{{ volkStatus }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:4px;margin:18px 0 0;padding:4px;background:rgba(66,62,55,.07);border-radius:11px">
+      <div sc-camel-on-click="{{ tabKontrollen }}" style="{{ tabStyleK }}">Kontrollen</div>
+      <div sc-camel-on-click="{{ tabHonig }}" style="{{ tabStyleH }}">Honig</div>
+      <div sc-camel-on-click="{{ tabBehandlung }}" style="{{ tabStyleB }}">Behandlung</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ onKontrollen }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:18px 20px 0">
+    <div style="display:flex;gap:0;padding:0 0 9px;border-bottom:1px solid rgba(66,62,55,.14)">
+      <span style="width:44px;flex:none;font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:rgba(66,62,55,.42)">DATUM</span>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
+        <sc-for list="{{ markHeads }}" as="h" hint-placeholder-count="6">
+          <span style="font:400 9.5px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.42);text-align:center">{{ h }}</span>
+        </sc-for>
+      </div>
+    </div>
+    <sc-for list="{{ entries }}" as="e" hint-placeholder-count="3">
+      <div style="padding:13px 0 12px;border-bottom:1px solid rgba(66,62,55,.09)">
+        <div style="display:flex;align-items:center">
+          <span style="width:44px;flex:none;font:500 14px/1 ui-monospace,Menlo,Consolas,monospace">{{ e.datum }}</span>
+          <div style="flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
+            <sc-for list="{{ e.marks }}" as="m" hint-placeholder-count="6">
+              <div style="{{ m.style }}">{{ m.text }}</div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-if value="{{ e.hasNote }}" hint-placeholder-val="{{ true }}">
+          <div style="margin:9px 0 0 44px;font:400 12.5px/1.45 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.7);text-wrap:pretty">{{ e.notiz }}</div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <div sc-camel-on-click="{{ openSheet }}" style="margin-top:16px;padding:15px;border-radius:12px;background:#423E37;color:#F7F2E8;text-align:center;font:600 14px/1 system-ui,-apple-system,sans-serif;cursor:pointer">+ Kontrolle erfassen</div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ onHonig }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 20px 0">
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:11px">HONIGRAUM AM RAUF / RUNTER</div>
+    <div style="display:flex;gap:10px;margin-bottom:26px">
+      <div style="flex:1;padding:14px 15px;border-radius:12px;background:#FFFCF5;border:1px solid rgba(66,62,55,.12)">
+        <div style="font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.45);margin-bottom:7px">RAUF</div>
+        <div style="font:500 19px/1 ui-monospace,Menlo,Consolas,monospace">18.4.</div>
+      </div>
+      <div style="flex:1;padding:14px 15px;border-radius:12px;background:#FFFCF5;border:1px solid rgba(66,62,55,.12)">
+        <div style="font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.45);margin-bottom:7px">RUNTER</div>
+        <div style="font:500 19px/1 ui-monospace,Menlo,Consolas,monospace">3.7.</div>
+      </div>
+    </div>
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:11px">HONIGWABEN ENTNOMMEN</div>
+    <div style="border:1px solid rgba(66,62,55,.12);border-radius:12px;background:#FFFCF5;overflow:hidden">
+      <sc-for list="{{ honig }}" as="h" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(66,62,55,.09)">
+          <span style="flex:1;font:500 15px/1 ui-monospace,Menlo,Consolas,monospace">{{ h.datum }}</span>
+          <span style="font:500 15px/1 ui-monospace,Menlo,Consolas,monospace">{{ h.stueck }}</span>
+          <span style="font:400 12px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.5);margin-left:5px">Waben</span>
+        </div>
+      </sc-for>
+      <div style="display:flex;align-items:center;padding:14px 16px;background:#F3EDE0">
+        <span style="flex:1;font:500 12px/1 system-ui,-apple-system,sans-serif">Summe geschleudert</span>
+        <span style="font:500 15px/1 ui-monospace,Menlo,Consolas,monospace">18,5 kg</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:15px;border-radius:12px;border:1.5px dashed rgba(66,62,55,.22);text-align:center;font:500 13.5px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6);cursor:pointer">+ Entnahme eintragen</div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ onBehandlung }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 20px 0">
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:11px">BEHANDELT AM</div>
+    <div style="padding:26px 20px;border-radius:12px;border:1.5px dashed rgba(66,62,55,.2);text-align:center">
+      <div style="font:400 14px/1.5 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6);margin-bottom:4px;text-wrap:pretty">Für {{ jahr }} ist noch keine Behandlung erfasst.</div>
+      <div style="font:400 11.5px/1.5 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.4)">PFLICHTANGABE FÜR DIE BESTANDSMELDUNG</div>
+    </div>
+    <div style="margin-top:14px;padding:15px;border-radius:12px;background:#E3B23C;text-align:center;font:600 14px/1 system-ui,-apple-system,sans-serif;cursor:pointer">+ Behandlung eintragen</div>
+    <div style="margin-top:22px;font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:11px">DROHNENRAHMEN</div>
+    <div style="display:flex;align-items:center;padding:14px 16px;border:1px solid rgba(66,62,55,.12);border-radius:12px;background:#FFFCF5">
+      <span style="flex:1;font:400 13.5px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6)">Eingesetzt am</span>
+      <span style="font:500 15px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.35)">—</span>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isBericht }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;z-index:2;flex:1;overflow:auto;padding:60px 0 116px">
+  <div style="padding:0 20px">
+    <div style="font:400 34px/1.05 Georgia,ui-serif,serif;margin-bottom:6px">Bericht {{ jahr }}</div>
+    <div style="font:400 12.5px/1.5 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.6);margin-bottom:24px">Aus 47 Kontrollen auf 12 Völkern.</div>
+
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:13px">ERTRAG JE VOLK</div>
+    <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:30px">
+      <sc-for list="{{ ertrag }}" as="e" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:11px">
+          <span style="width:20px;flex:none;font:500 12px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.5)">{{ e.nr }}</span>
+          <div style="flex:1;height:9px;border-radius:99px;background:rgba(66,62,55,.09);overflow:hidden">
+            <div style="{{ e.barStyle }}"></div>
+          </div>
+          <span style="width:46px;flex:none;text-align:right;font:500 12.5px/1 ui-monospace,Menlo,Consolas,monospace">{{ e.kg }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:11px">EXPORT</div>
+    <div style="border:1px solid rgba(66,62,55,.12);border-radius:14px;background:#FFFCF5;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-bottom:1px solid rgba(66,62,55,.09);cursor:pointer">
+        <span style="width:30px;height:30px;border-radius:7px;background:#F3EDE0;flex:none;display:flex;align-items:center;justify-content:center;font:500 9.5px/1 ui-monospace,Menlo,Consolas,monospace">PDF</span>
+        <div style="flex:1"><div style="font:500 13.5px/1.2 system-ui,-apple-system,sans-serif">Stockkarten als PDF</div><div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:2px">Ein Blatt je Volk, Papierlayout</div></div>
+        <span style="font:400 18px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.3)">›</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-bottom:1px solid rgba(66,62,55,.09);cursor:pointer">
+        <span style="width:30px;height:30px;border-radius:7px;background:#F3EDE0;flex:none;display:flex;align-items:center;justify-content:center;font:500 9.5px/1 ui-monospace,Menlo,Consolas,monospace">CSV</span>
+        <div style="flex:1"><div style="font:500 13.5px/1.2 system-ui,-apple-system,sans-serif">Alle Kontrollen als CSV</div><div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:2px">Für Tabellenkalkulation</div></div>
+        <span style="font:400 18px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.3)">›</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer">
+        <span style="width:30px;height:30px;border-radius:7px;background:#E3B23C;flex:none;display:flex;align-items:center;justify-content:center;font:500 9.5px/1 ui-monospace,Menlo,Consolas,monospace">TSK</span>
+        <div style="flex:1"><div style="font:500 13.5px/1.2 system-ui,-apple-system,sans-serif">Bestandsmeldung</div><div style="font:400 11.5px/1.3 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);margin-top:2px">Völkerzahl + Behandlungen, Stichtag</div></div>
+        <span style="font:400 18px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.3)">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:40;background:rgba(25,23,19,.42)" sc-camel-on-click="{{ closeSheet }}"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:41;background:#F7F2E8;border-radius:20px 20px 0 0;padding:10px 20px 40px;max-height:88%;overflow:auto;box-shadow:0 -12px 40px rgba(25,23,19,.2)">
+  <div style="width:38px;height:4px;border-radius:99px;background:rgba(66,62,55,.2);margin:0 auto 16px"></div>
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px">
+    <div>
+      <div style="font:500 20px/1.1 Georgia,ui-serif,serif">Kontrolle · Volk {{ volkNr }}</div>
+      <div style="font:400 11.5px/1 ui-monospace,Menlo,Consolas,monospace;color:rgba(66,62,55,.5);margin-top:7px">{{ heuteLabel }}</div>
+    </div>
+    <div sc-camel-on-click="{{ closeSheet }}" style="font:500 13px/1 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.55);padding:8px 2px;cursor:pointer">Abbrechen</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px">
+    <sc-for list="{{ formMarks }}" as="m" hint-placeholder-count="6">
+      <div sc-camel-on-click="{{ m.toggle }}" style="{{ m.style }}">
+        <span style="{{ m.boxStyle }}">{{ m.check }}</span>
+        <span style="font:500 13.5px/1.2 system-ui,-apple-system,sans-serif">{{ m.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:9px">FUTTER GEGEBEN</div>
+  <div style="display:flex;gap:7px;margin-bottom:18px">
+    <sc-for list="{{ futterOpts }}" as="f" hint-placeholder-count="4">
+      <div sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</div>
+    </sc-for>
+  </div>
+
+  <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:9px">BEMERKUNG</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px">
+    <sc-for list="{{ notizChips }}" as="c" hint-placeholder-count="4">
+      <div sc-camel-on-click="{{ c.pick }}" style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:9px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.16);color:rgba(66,62,55,.75);cursor:pointer">{{ c.label }}</div>
+    </sc-for>
+  </div>
+  <div style="padding:13px 14px;border-radius:11px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);min-height:74px;font:400 13.5px/1.5 system-ui,-apple-system,sans-serif;color:{{ notizColor }}">{{ notizText }}</div>
+
+  <div sc-camel-on-click="{{ save }}" style="margin-top:20px;padding:16px;border-radius:12px;background:#423E37;color:#F7F2E8;text-align:center;font:600 15px/1 system-ui,-apple-system,sans-serif;cursor:pointer">Offline speichern</div>
+  <div style="text-align:center;font:400 11.5px/1.4 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.45);margin-top:11px">Landet sofort auf der Karte · Sync später</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:20px;right:20px;bottom:120px;z-index:50;padding:14px 16px;border-radius:12px;background:#423E37;color:#F7F2E8;display:flex;align-items:center;gap:11px;box-shadow:0 8px 24px rgba(25,23,19,.25)">
+  <span style="width:7px;height:7px;border-radius:99px;background:#E3B23C;flex:none"></span>
+  <span style="font:500 13px/1.35 system-ui,-apple-system,sans-serif">{{ toastText }}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:30;padding:9px 12px 26px;background:rgba(247,242,232,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(66,62,55,.1);display:flex;align-items:flex-end">
+  <div sc-camel-on-click="{{ goUeber }}" style="{{ navUeber }}">
+    <span style="width:17px;height:17px;border:1.8px solid currentColor;border-radius:4px"></span>
+    <span style="font:500 10px/1 system-ui,-apple-system,sans-serif">Übersicht</span>
+  </div>
+  <div sc-camel-on-click="{{ goVoelker }}" style="{{ navVoelker }}">
+    <span style="width:17px;height:17px;border:1.8px solid currentColor;border-radius:99px"></span>
+    <span style="font:500 10px/1 system-ui,-apple-system,sans-serif">Völker</span>
+  </div>
+  <div sc-camel-on-click="{{ goScan }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:2px 0">
+    <span style="width:44px;height:34px;border-radius:11px;background:#E3B23C;display:flex;align-items:center;justify-content:center">
+      <span style="width:15px;height:15px;border:2px solid #423E37;border-radius:3px;display:block"></span>
+    </span>
+    <span style="font:500 10px/1 system-ui,-apple-system,sans-serif;color:#423E37">Scan</span>
+  </div>
+  <div sc-camel-on-click="{{ goBericht }}" style="{{ navBericht }}">
+    <span style="width:17px;height:17px;border:1.8px solid currentColor;border-radius:4px 4px 0 0;border-bottom-width:3px"></span>
+    <span style="font:500 10px/1 system-ui,-apple-system,sans-serif">Bericht</span>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</div>
+<div style="position:absolute;left:138px;top:11px;width:126px;height:37px;border-radius:24px;background:#0C0B09;z-index:60"></div>
+<div style="position:absolute;left:0;top:0;right:0;height:54px;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:0 34px;pointer-events:none;color:{{ sbColor }}">
+  <span style="font:500 16px/1 system-ui,-apple-system,sans-serif;letter-spacing:-.01em">9:14</span>
+  <span style="display:flex;align-items:flex-end;gap:6px">
+    <span style="display:flex;align-items:flex-end;gap:2px">
+      <span style="width:3px;height:5px;border-radius:1px;background:currentColor"></span>
+      <span style="width:3px;height:7px;border-radius:1px;background:currentColor"></span>
+      <span style="width:3px;height:9px;border-radius:1px;background:currentColor"></span>
+      <span style="width:3px;height:11px;border-radius:1px;background:currentColor;opacity:.35"></span>
+    </span>
+    <span style="position:relative;width:24px;height:11px;border-radius:3px;border:1.2px solid currentColor;padding:1.4px;display:block">
+      <span style="display:block;width:70%;height:100%;border-radius:1.5px;background:currentColor"></span>
+    </span>
+  </span>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:9px;z-index:60;display:flex;justify-content:center;pointer-events:none">
+  <span style="width:139px;height:5px;border-radius:100px;background:{{ homeColor }}"></span>
+</div>
+</div>
+
+<div style="display:flex;gap:18px;margin-top:20px;width:402px">
+  <div style="flex:1;font:400 11.5px/1.5 system-ui,-apple-system,sans-serif;color:rgba(66,62,55,.5);text-wrap:pretty">Scan → Karte → Kontrolle in vier Taps. Der Kartenkopf bleibt sichtbar, damit du nie im falschen Volk schreibst.</div>
+</div>
+</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Übersicht&quot;,&quot;Völker&quot;,&quot;Stockkarte&quot;,&quot;Scanner&quot;,&quot;Bericht&quot;],&quot;default&quot;:&quot;Übersicht&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototyp&quot;},&quot;indicatorStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Buchstaben&quot;,&quot;Punkte&quot;],&quot;default&quot;:&quot;Buchstaben&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Kontrollraster&quot;},&quot;offlineMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototyp&quot;}}">
+const MARKS = [
+  { key: 'koenigin', label: 'Königin', short: 'K' },
+  { key: 'stifte', label: 'Stifte', short: 'St' },
+  { key: 'made', label: 'Made', short: 'Ma' },
+  { key: 'brut', label: 'verd. Brut', short: 'vB' },
+  { key: 'pollen', label: 'Pollen', short: 'Po' },
+  { key: 'futter', label: 'Futter', short: 'Fu' },
+];
+
+const VOELKER = [
+  { nr: '9', name: 'Weiler 9', stand: 'Weiler', status: 'Volk tot', letzte: '29.8.', tage: '2 T' },
+  { nr: '1', name: 'Weiler 1', stand: 'Weiler', status: 'stark', letzte: '12.8.', tage: '18 T' },
+  { nr: '2', name: 'Weiler 2', stand: 'Weiler', status: 'stark', letzte: '20.8.', tage: '10 T' },
+  { nr: '3', name: 'Weiler 3', stand: 'Weiler', status: 'schwach', letzte: '2.8.', tage: '28 T' },
+  { nr: '4', name: 'Hausgarten 4', stand: 'Hausgarten', status: 'stark', letzte: '24.8.', tage: '6 T' },
+  { nr: '5', name: 'Hausgarten 5', stand: 'Hausgarten', status: 'Ableger', letzte: '21.8.', tage: '9 T' },
+  { nr: '6', name: 'Hausgarten 6', stand: 'Hausgarten', status: 'stark', letzte: '14.8.', tage: '16 T' },
+];
+
+const SEED = {
+  '9': [
+    { datum: '18.4.', on: ['stifte', 'made', 'futter'], notiz: '2 Brutwaben entnommen' },
+    { datum: '20.6.', on: ['stifte', 'made'], notiz: 'Honigraum teils voll, nicht verdeckelt' },
+    { datum: '29.8.', on: [], notiz: 'Volk tot' },
+  ],
+};
+
+class Component extends DCLogic {
+  state = {
+    screen: null,
+    tab: 'kontrollen',
+    volkNr: '9',
+    scan: 'idle',
+    sheet: false,
+    form: { koenigin: false, stifte: false, made: false, brut: false, pollen: false, futter: false },
+    futterKg: null,
+    notiz: '',
+    entries: JSON.parse(JSON.stringify(SEED)),
+    pending: 3,
+    toast: '',
+  };
+
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  go = (screen) => this.setState({ screen, scan: 'idle' });
+
+  toast = (text) => {
+    this.setState({ toast: text });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 2600);
+  };
+
+  open = (nr) => this.setState({ screen: 'karte', tab: 'kontrollen', volkNr: nr, scan: 'idle' });
+
+  save = () => {
+    const on = MARKS.filter((m) => this.state.form[m.key]).map((m) => m.key);
+    const bits = [];
+    if (this.state.futterKg) bits.push(this.state.futterKg + ' Futter');
+    if (this.state.notiz) bits.push(this.state.notiz);
+    const entries = JSON.parse(JSON.stringify(this.state.entries));
+    const list = entries[this.state.volkNr] || (entries[this.state.volkNr] = []);
+    list.push({ datum: '30.8.', on, notiz: bits.join(' · ') });
+    this.setState({
+      entries, sheet: false, pending: this.state.pending + 1,
+      form: { koenigin: false, stifte: false, made: false, brut: false, pollen: false, futter: false },
+      futterKg: null, notiz: '',
+    });
+    this.toast('Kontrolle 30.8. lokal gespeichert');
+  };
+
+  renderVals() {
+    const p = this.props;
+    const start = p.startScreen === 'Völker' ? 'voelker'
+      : p.startScreen === 'Stockkarte' ? 'karte'
+      : p.startScreen === 'Scanner' ? 'scan'
+      : p.startScreen === 'Bericht' ? 'bericht' : 'uebersicht';
+    const screen = this.state.screen || start;
+    const letters = (p.indicatorStyle ?? 'Buchstaben') === 'Buchstaben';
+    const volk = VOELKER.find((v) => v.nr === this.state.volkNr) || VOELKER[0];
+    const isTot = volk.status === 'Volk tot';
+
+    const nav = (active) => 'flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:6px 0 2px;color:' +
+      (active ? '#423E37' : 'rgba(66,62,55,0.38)');
+    const tab = (active) => 'flex:1;text-align:center;padding:10px 6px;border-radius:8px;cursor:pointer;font:500 12.5px/1 system-ui,-apple-system,sans-serif;' +
+      (active ? 'background:#FFFCF5;color:#423E37;box-shadow:0 1px 2px rgba(66,62,55,.12)' : 'color:rgba(66,62,55,.55)');
+
+    const markCell = (on) => 'height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,Consolas,monospace;' +
+      (on ? 'background:#E3B23C;color:#423E37' : 'background:transparent;border:1px dashed rgba(66,62,55,.18);color:rgba(66,62,55,.22)');
+
+    const entries = (this.state.entries[volk.nr] || []).map((e) => ({
+      datum: e.datum,
+      notiz: e.notiz,
+      hasNote: !!e.notiz,
+      marks: MARKS.map((m) => {
+        const on = e.on.indexOf(m.key) >= 0;
+        return { style: markCell(on), text: on ? (letters ? m.short : '●') : (letters ? '·' : '') };
+      }),
+    }));
+
+    const formMarks = MARKS.map((m) => {
+      const on = !!this.state.form[m.key];
+      return {
+        label: m.label,
+        check: on ? '✓' : '',
+        toggle: () => this.setState({ form: Object.assign({}, this.state.form, { [m.key]: !on }) }),
+        style: 'display:flex;align-items:center;gap:11px;padding:15px 14px;border-radius:12px;cursor:pointer;' +
+          (on ? 'background:#FFFCF5;border:1.5px solid #E3B23C' : 'background:#FFFCF5;border:1.5px solid rgba(66,62,55,.12)'),
+        boxStyle: 'width:22px;height:22px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;font:500 13px/1 system-ui,-apple-system,sans-serif;' +
+          (on ? 'background:#E3B23C;color:#423E37' : 'background:transparent;border:1.5px solid rgba(66,62,55,.22)'),
+      };
+    });
+
+    const futterOpts = ['—', '1 kg', '2,5 kg', '5 kg'].map((label) => {
+      const val = label === '—' ? null : label;
+      const on = this.state.futterKg === val;
+      return {
+        label,
+        pick: () => this.setState({ futterKg: val, form: Object.assign({}, this.state.form, { futter: val !== null }) }),
+        style: 'flex:1;text-align:center;padding:12px 4px;border-radius:10px;cursor:pointer;font:500 12.5px/1 ui-monospace,Menlo,Consolas,monospace;' +
+          (on ? 'background:#423E37;color:#F7F2E8' : 'background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)'),
+      };
+    });
+
+    const notizChips = ['Brutwaben entnommen', 'Weiselzellen', 'Sanft', 'Erweitert'].map((label) => ({
+      label,
+      pick: () => this.setState({ notiz: this.state.notiz ? this.state.notiz + ', ' + label : label }),
+    }));
+
+    const ertragRaw = [['1', 11.5], ['2', 14.0], ['3', 6.5], ['4', 18.5], ['5', 4.0], ['9', 18.5]];
+    const ertrag = ertragRaw.map(([nr, kg]) => ({
+      nr, kg: String(kg).replace('.', ',') + ' kg',
+      barStyle: 'height:100%;border-radius:99px;background:#E3B23C;width:' + Math.round((kg / 20) * 100) + '%',
+    }));
+
+    return {
+      isDark: screen === 'scan',
+      sbColor: screen === 'scan' ? '#F7F2E8' : '#423E37',
+      homeColor: screen === 'scan' ? 'rgba(247,242,232,.7)' : 'rgba(66,62,55,.28)',
+      isScan: screen === 'scan', isUeber: screen === 'uebersicht', isVoelker: screen === 'voelker',
+      isKarte: screen === 'karte', isBericht: screen === 'bericht',
+      showNav: screen !== 'scan',
+      showOffline: (p.offlineMode ?? true),
+      pendingLabel: this.state.pending + ' Einträge warten',
+      sync: () => { this.setState({ pending: 0 }); this.toast('Alles synchronisiert'); },
+
+      jahr: '2026',
+      volkNr: volk.nr, volkName: volk.name, volkStand: volk.stand,
+      volkStatus: volk.status, statusColor: isTot ? '#8C4A2F' : '#423E37',
+
+      goUeber: () => this.go('uebersicht'), goVoelker: () => this.go('voelker'),
+      goScan: () => this.go('scan'), goBericht: () => this.go('bericht'),
+      navUeber: nav(screen === 'uebersicht'), navVoelker: nav(screen === 'voelker' || screen === 'karte'),
+      navBericht: nav(screen === 'bericht'),
+
+      tabKontrollen: () => this.setState({ tab: 'kontrollen' }),
+      tabHonig: () => this.setState({ tab: 'honig' }),
+      tabBehandlung: () => this.setState({ tab: 'behandlung' }),
+      tabStyleK: tab(this.state.tab === 'kontrollen'), tabStyleH: tab(this.state.tab === 'honig'),
+      tabStyleB: tab(this.state.tab === 'behandlung'),
+      onKontrollen: this.state.tab === 'kontrollen', onHonig: this.state.tab === 'honig',
+      onBehandlung: this.state.tab === 'behandlung',
+
+      markHeads: MARKS.map((m) => m.short),
+      entries,
+      honig: [{ datum: '4.6.', stueck: '9' }, { datum: '3.7.', stueck: '8' }],
+      ertrag,
+
+      voelker: VOELKER.map((v) => ({
+        nr: v.nr, name: v.name,
+        meta: v.stand + ' · letzte Kontrolle ' + v.letzte,
+        dot: v.status === 'Volk tot' ? '#8C4A2F' : v.status === 'schwach' ? '#E3B23C' : '#5E7B45',
+        open: () => this.open(v.nr),
+      })),
+      faellig: [
+        { nr: '3', name: 'Weiler 3', hint: 'schwach · Futter prüfen', tage: '28 T', open: () => this.open('3') },
+        { nr: '1', name: 'Weiler 1', hint: 'Behandlung 2026 fehlt', tage: '18 T', open: () => this.open('1') },
+        { nr: '6', name: 'Hausgarten 6', hint: 'Winterfutter offen', tage: '16 T', open: () => this.open('6') },
+      ],
+      recent: [
+        { datum: '29.8.', text: 'Volk 9 — Volk tot gemeldet' },
+        { datum: '24.8.', text: 'Volk 4 — Stifte, Made, verd. Brut' },
+        { datum: '21.8.', text: 'Volk 5 — Ableger, 2,5 kg Futter' },
+      ],
+
+      doScan: () => { this.open('9'); this.toast('Volk 9 · Weiler erkannt'); },
+
+      sheetOpen: this.state.sheet,
+      openSheet: () => this.setState({ sheet: true }),
+      closeSheet: () => this.setState({ sheet: false }),
+      heuteLabel: 'SO 30.8.2026 · 09:14 · GPS WEILER',
+      formMarks, futterOpts, notizChips,
+      notizText: this.state.notiz || 'Kurz notieren …',
+      notizColor: this.state.notiz ? '#423E37' : 'rgba(66,62,55,.38)',
+      save: this.save,
+
+      toastOn: !!this.state.toast, toastText: this.state.toast,
+    };
+  }
+}
+
+</script>
+
+
+<div id="__claude_design_branding"><style>#__claude_design_branding{position:fixed;right:16px;bottom:16px;z-index:2147483646;display:flex;align-items:center;gap:7px;height:30px;padding:0 5px 0 10px;border-radius:999px;font-family:"Anthropic Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1;letter-spacing:normal;text-transform:none;color:#141413;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:0 0 0 .5px rgba(31,30,29,.14),0 2px 10px rgba(0,0,0,.09)}
+#__claude_design_branding *{box-sizing:border-box;margin:0}
+#__claude_design_branding a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+#__claude_design_branding a:hover span{text-decoration:underline}
+#__claude_design_branding svg{flex:none}
+#__claude_design_branding a svg{color:#D97757}
+#__claude_design_branding button{width:20px;height:20px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:currentColor;opacity:.55;border:0;background:none;cursor:pointer;flex:none;font:inherit;transition:opacity .14s}
+#__claude_design_branding button:hover{opacity:1;background:rgba(127,127,127,.22)}
+@media print{#__claude_design_branding{display:none}}</style><a href="https://claude.com/product/design" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 20 21" fill="none" aria-hidden="true"><path fill="currentColor" d="M9.99902 0C15.5258 0.000170936 19.999 4.50643 19.999 10.0547C19.999 11.7656 19.5863 12.9976 18.7861 13.8203C17.9924 14.6362 16.9465 14.9138 15.9854 15.0078C15.05 15.0993 14.0097 15.0262 13.2549 15.0186C12.8524 15.0145 12.5177 15.0267 12.2441 15.0703C11.9682 15.1144 11.8143 15.1813 11.7305 15.2432C11.4745 15.4322 11.3353 15.7121 11.2656 16.1602C11.2303 16.3875 11.2168 16.6362 11.209 16.9131C11.2017 17.1715 11.1986 17.4893 11.1807 17.7705C11.1469 18.2975 11.0495 19.0865 10.4199 19.5908C9.7846 20.0996 8.88652 20.1057 7.85449 19.877C7.36399 19.7682 6.88652 19.6232 6.42578 19.4453C2.66989 17.9949 0.000187748 14.3414 0 10.0547C0 4.50643 4.47223 0.000171048 9.99902 0ZM9.99902 1.60547C5.36781 1.60564 1.60547 5.38391 1.60547 10.0547C1.60566 13.6582 3.84823 16.7296 7.00391 17.9482C7.39027 18.0974 7.79085 18.2184 8.20215 18.3096C9.1375 18.5169 9.384 18.3633 9.41602 18.3379C9.4524 18.3087 9.54558 18.1915 9.5791 17.668C9.5947 17.4239 9.59473 17.1786 9.60352 16.8672C9.61179 16.5742 9.62831 16.2435 9.67969 15.9131C9.78359 15.2455 10.0474 14.4906 10.7764 13.9521C11.1479 13.6778 11.5842 13.5493 11.9912 13.4844C12.4007 13.4191 12.8434 13.4088 13.2705 13.4131C14.1753 13.4222 15.0071 13.4905 15.8291 13.4102C16.6257 13.3322 17.2249 13.1235 17.6357 12.7012C18.0401 12.2855 18.3935 11.5261 18.3936 10.0547C18.3936 5.38391 14.6302 1.60564 9.99902 1.60547ZM5.11621 9.86719C5.86386 9.91468 6.45486 10.5348 6.45508 11.2939C6.45506 12.0838 5.81519 12.7245 5.02539 12.7246C4.28481 12.7246 3.67573 12.1617 3.60254 11.4404L3.59473 11.2939L3.60156 11.1533C3.66942 10.4596 4.23282 9.91186 4.93359 9.86719H5.11621ZM14.9814 7.19141C15.729 7.23889 16.3199 7.85919 16.3203 8.61816C16.3203 9.40801 15.6804 10.0487 14.8906 10.0488C14.1501 10.0487 13.5409 9.48586 13.4678 8.76465L13.46 8.61816L13.4668 8.47754C13.5348 7.78403 14.0983 7.23618 14.7988 7.19141H14.9814ZM6.4541 4.93457C7.20161 4.9822 7.79275 5.60231 7.79297 6.36133C7.79288 7.151 7.15291 7.7917 6.36328 7.79199C5.62274 7.79199 5.01369 7.22903 4.94043 6.50781L4.93262 6.36133L4.93945 6.2207C5.00731 5.52698 5.5707 4.97922 6.27148 4.93457H6.4541ZM11.3867 3.59668C12.1343 3.64419 12.7253 4.26436 12.7256 5.02344C12.7256 5.81326 12.0857 6.45393 11.2959 6.4541C10.5553 6.4541 9.94622 5.89123 9.87305 5.16992L9.86523 5.02344L9.87207 4.88281C9.93996 4.18912 10.5033 3.64133 11.2041 3.59668H11.3867Z"></path></svg><span>Made with Claude Design</span></a><button type="button" aria-label="Dismiss" onclick="this.parentElement.remove()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></button></div></body></html>

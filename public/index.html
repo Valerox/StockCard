@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<!-- viewport-fit=cover, damit die App unter Notch und Home-Indikator reicht -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7F2E8">
+<meta name="description" content="Digitale Stockkarte für die Imkerei — Kontrollen, Honig und Behandlungen am Bienenstand erfassen.">
+
+<title>Stockkarte</title>
+
+<!-- Als App auf dem Homescreen -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Stockkarte">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192">
+
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div id="app">
+  <div class="laden">Stockkarte wird geladen …</div>
+</div>
+
+<noscript>
+  <div style="padding:32px;font:400 15px/1.6 system-ui,sans-serif;color:#423E37;text-align:center">
+    Für die Stockkarte muss JavaScript aktiviert sein.
+  </div>
+</noscript>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

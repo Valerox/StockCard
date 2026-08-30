@@ -1,0 +1,14 @@
+{
+  "name": "stockkarte",
+  "version": "1.0.0",
+  "description": "Digitale Stockkarte für die Imkerei — offline-fähige PWA mit QR-Scanner, läuft auf einem Raspberry Pi.",
+  "type": "commonjs",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "seed": "node server/seed.js"
+  },
+  "engines": { "node": ">=18" },
+  "private": true,
+  "license": "MIT"
+}
