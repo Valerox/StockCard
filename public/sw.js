@@ -8,7 +8,7 @@
 // Beim Ändern von Dateien VERSION hochzählen, dann holt sich jedes Gerät
 // den neuen Stand.
 
-const VERSION = 'stockkarte-v2';
+const VERSION = 'stockkarte-v4';
 const HUELLE = '/index.html';
 
 const VORRAT = [
