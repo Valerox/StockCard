@@ -68,12 +68,19 @@ export function codeDeuten(roh) {
 /**
  * Scanner starten.
  *
- * @param {HTMLVideoElement} video   Element, in dem das Kamerabild läuft
+ * @param {HTMLVideoElement|(()=>HTMLVideoElement)} videoQuelle
+ *        Das Element mit dem Kamerabild — oder besser eine Funktion, die es
+ *        liefert. Die Leseschleife fragt bei jedem Bild neu nach. Damit kann
+ *        ihr ein Neuzeichnen der Oberfläche nichts anhaben: hinge sie an einem
+ *        festen Element, würde sie nach dem Austausch stillschweigend für immer
+ *        dasselbe eingefrorene Standbild analysieren.
  * @param {(text:string)=>void} beiTreffer  Rückruf mit dem gelesenen Text
  * @param {(status:string)=>void} beiStatus Statusmeldungen für die Anzeige
  * @returns {Promise<{stoppen:Function, lichtUmschalten:Function|null}>}
  */
-export async function scannerStarten(video, beiTreffer, beiStatus = () => {}) {
+export async function scannerStarten(videoQuelle, beiTreffer, beiStatus = () => {}) {
+  const holeVideo = typeof videoQuelle === 'function' ? videoQuelle : () => videoQuelle;
+  const video = holeVideo();
   if (!sichererKontext()) {
     const fehler = new Error(
       'Der Browser gibt die Kamera nur über eine gesicherte Verbindung frei. ' +
@@ -166,23 +173,39 @@ export async function scannerStarten(video, beiTreffer, beiStatus = () => {}) {
     beiTreffer(text);
   }
 
+  // Erkennt ein stehendes Bild: läuft die Kamera, ändert sich currentTime
+  // ständig. Bleibt sie stehen, sagen wir es, statt stumm weiterzusuchen.
+  let letzteBildzeit = -1;
+  let stillSeit = 0;
+
   async function bildPruefen() {
     if (!laeuft) return;
-    if (video.readyState < 2 || !video.videoWidth) {
+
+    const aktuellesVideo = holeVideo();
+    if (!aktuellesVideo || aktuellesVideo.readyState < 2 || !aktuellesVideo.videoWidth) {
       timer = setTimeout(bildPruefen, 120);
       return;
     }
 
+    if (aktuellesVideo.currentTime === letzteBildzeit) {
+      stillSeit += 1;
+      if (stillSeit === 25) beiStatus('Das Kamerabild steht still — Scanner bitte neu öffnen');
+    } else {
+      if (stillSeit >= 25) beiStatus('Halte den QR-Code am Deckel ins Bild');
+      stillSeit = 0;
+      letzteBildzeit = aktuellesVideo.currentTime;
+    }
+
     try {
       if (detector) {
-        const funde = await detector.detect(video);
+        const funde = await detector.detect(aktuellesVideo);
         if (funde && funde.length) treffer(funde[0].rawValue);
       } else {
         // Für die Erkennung reicht ein kleineres Bild — spart spürbar Akku
-        const breite = Math.min(640, video.videoWidth);
-        const hoehe = Math.round((video.videoHeight / video.videoWidth) * breite);
+        const breite = Math.min(640, aktuellesVideo.videoWidth);
+        const hoehe = Math.round((aktuellesVideo.videoHeight / aktuellesVideo.videoWidth) * breite);
         if (canvas.width !== breite) { canvas.width = breite; canvas.height = hoehe; }
-        ctx.drawImage(video, 0, 0, breite, hoehe);
+        ctx.drawImage(aktuellesVideo, 0, 0, breite, hoehe);
         const bild = ctx.getImageData(0, 0, breite, hoehe);
         const fund = jsQR(bild.data, breite, hoehe, { inversionAttempts: 'dontInvert' });
         if (fund && fund.data) treffer(fund.data);
@@ -204,9 +227,11 @@ export async function scannerStarten(video, beiTreffer, beiStatus = () => {}) {
       spur.applyConstraints({ advanced: [{ torch: false }] }).catch(() => {});
     }
     for (const s of stream.getTracks()) s.stop();
-    if (video) {
-      video.pause();
-      video.srcObject = null;
+    // Beim Schließen kann das Element schon weg sein — beide Fälle abdecken.
+    const zuBeenden = holeVideo() || video;
+    if (zuBeenden) {
+      zuBeenden.pause();
+      zuBeenden.srcObject = null;
     }
   }
 

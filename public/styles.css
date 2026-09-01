@@ -46,6 +46,10 @@
 
 * { box-sizing: border-box; }
 
+/* Eigene display-Regeln (etwa .knopf) hätten sonst Vorrang vor der
+   Browser-Vorgabe für [hidden], und Verstecktes bliebe sichtbar. */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;

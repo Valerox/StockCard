@@ -629,7 +629,13 @@ export function navigation(aktiv) {
 
 // ---------- Scanner-Oberfläche ----------
 
-export function scannerAnsicht(ui) {
+/**
+ * Das Gerüst des Scanners. Wird beim Öffnen genau einmal erzeugt und danach
+ * nicht mehr neu gezeichnet — Statustext, Fehlermeldung und Lichtknopf werden
+ * an Ort und Stelle geändert. Nur so bleibt das <video>, das app.js in die
+ * Bühne hängt, durchgehend im DOM und liefert weiter Bilder.
+ */
+export function scannerAnsicht() {
   return '<div class="scanner">' +
     '<div class="scanner-kopf">' +
       '<div class="scanner-titel">Stock scannen</div>' +
@@ -637,8 +643,8 @@ export function scannerAnsicht(ui) {
     '</div>' +
     '<div class="scanner-hinweis">QR-Code am Deckel ins Bild halten — die Karte öffnet sich sofort.</div>' +
 
-    '<div class="scanner-buehne">' +
-      '<video id="scanner-video" playsinline muted></video>' +
+    '<div class="scanner-buehne" id="scanner-buehne">' +
+      // hierhin kommt das <video>
       '<div class="scanner-rahmen">' +
         '<span class="scanner-ecke scanner-ecke--lo"></span>' +
         '<span class="scanner-ecke scanner-ecke--ro"></span>' +
@@ -646,15 +652,13 @@ export function scannerAnsicht(ui) {
         '<span class="scanner-ecke scanner-ecke--ru"></span>' +
         '<div class="scanner-linie"></div>' +
       '</div>' +
-      '<div class="scanner-status" id="scanner-status">' + esc(ui.scannerStatus || 'Kamera wird geöffnet …') + '</div>' +
+      '<div class="scanner-status" id="scanner-status">Kamera wird geöffnet …</div>' +
     '</div>' +
 
-    (ui.scannerFehler
-      ? '<div class="scanner-fehler"><b>Kamera nicht verfügbar.</b><br>' + esc(ui.scannerFehler) + '</div>'
-      : '') +
+    '<div class="scanner-fehler" id="scanner-fehler" hidden></div>' +
 
     '<div class="scanner-fuss">' +
-      (ui.scannerLicht ? '<button class="knopf knopf--gold" data-aktion="scanner-licht">Licht an / aus</button>' : '') +
+      '<button class="knopf knopf--gold" data-aktion="scanner-licht" id="scanner-licht" hidden>Licht an / aus</button>' +
       '<button class="scanner-manuell" data-aktion="scanner-manuell">' +
         'Kein QR am Stock? <span>Volk manuell wählen</span></button>' +
     '</div>' +

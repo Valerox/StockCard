@@ -11,7 +11,7 @@ import {
 } from './store.js';
 
 import { heuteIso, zahlLesen, esc } from './format.js';
-import { scannerStarten, codeDeuten, sichererKontext, kameraMoeglich } from './scanner.js';
+import { scannerStarten, codeDeuten } from './scanner.js';
 import { qrSvg, volkUrl } from './qr.js';
 import * as V from './views.js';
 
@@ -32,14 +32,12 @@ const ui = {
   toastArt: 'ok',
   loginFehler: null,
   scannerOffen: false,
-  scannerStatus: '',
-  scannerFehler: null,
-  scannerLicht: false,
   qrSvg: null,
   qrBogen: null,
 };
 
 let scannerGriff = null;
+let scannerVideo = null;   // bleibt vom Öffnen bis zum Schließen dasselbe Element
 let toastTimer = null;
 
 // ---------- Router ----------
@@ -140,20 +138,13 @@ function zeichnen() {
     '</div>' +
     (ui.sheet ? '<div class="sheet-grund" data-aktion="sheet-schliessen"></div>' +
       '<div class="sheet" role="dialog" aria-modal="true">' + V.sheetInhalt(ui) + '</div>' : '') +
-    (ui.scannerOffen ? V.scannerAnsicht(ui) : '') +
     (ui.toast ? '<div class="toast' + (ui.toastArt === 'fehler' ? ' toast--fehler' : '') + '" role="status">' +
       '<span class="punkt"></span><span>' + esc(ui.toast) + '</span></div>' : '');
 
-  fokusWiederherstellen(merker);
+  // Der Scanner steht bewusst nicht in diesem HTML — er lebt in #scanner-wurzel
+  // und überlebt dadurch jedes Neuzeichnen mitsamt laufendem Kamerabild.
 
-  // Das Videoelement wird beim Neuzeichnen ersetzt — Kamera neu anhängen.
-  if (ui.scannerOffen && scannerGriff && scannerGriff.stream) {
-    const video = document.getElementById('scanner-video');
-    if (video && !video.srcObject) {
-      video.srcObject = scannerGriff.stream;
-      video.play().catch(() => {});
-    }
-  }
+  fokusWiederherstellen(merker);
 }
 
 beiAenderung(zeichnen);
@@ -170,30 +161,42 @@ function melden(text, art = 'ok') {
 
 // ---------- Scanner ----------
 
-async function scannerOeffnen() {
-  ui.scannerOffen = true;
-  ui.scannerFehler = null;
-  ui.scannerStatus = 'Kamera wird geöffnet …';
-  ui.scannerLicht = false;
-  zeichnen();
+const scannerWurzel = document.getElementById('scanner-wurzel');
 
-  const video = document.getElementById('scanner-video');
-  if (!video) return;
+/** Statuszeile im Kamerabild ändern, ohne irgendetwas neu zu zeichnen. */
+function scannerStatus(text) {
+  const el = document.getElementById('scanner-status');
+  if (el) el.textContent = text;
+}
+
+async function scannerOeffnen() {
+  if (ui.scannerOffen) return;
+  ui.scannerOffen = true;
+
+  // Gerüst einmalig aufbauen …
+  scannerWurzel.innerHTML = V.scannerAnsicht();
+
+  // … und das Videoelement selbst erzeugen, damit es niemandem gehört
+  // außer uns und bis zum Schließen an derselben Stelle hängen bleibt.
+  const video = document.createElement('video');
+  video.id = 'scanner-video';
+  video.setAttribute('playsinline', '');
+  video.muted = true;
+  video.autoplay = true;
+  scannerVideo = video;
+  document.getElementById('scanner-buehne').prepend(video);
 
   try {
-    const griff = await scannerStarten(video, codeErkannt, (status) => {
-      ui.scannerStatus = status;
-      const el = document.getElementById('scanner-status');
-      if (el) el.textContent = status; // ohne Neuzeichnen, sonst stockt das Bild
-    });
-    scannerGriff = griff;
-    scannerGriff.stream = video.srcObject;
-    ui.scannerLicht = Boolean(griff.lichtUmschalten);
-    zeichnen();
+    scannerGriff = await scannerStarten(() => scannerVideo, codeErkannt, scannerStatus);
+    const lichtKnopf = document.getElementById('scanner-licht');
+    if (lichtKnopf && scannerGriff.lichtUmschalten) lichtKnopf.hidden = false;
   } catch (err) {
-    ui.scannerFehler = err.message;
-    ui.scannerStatus = 'Kein Bild';
-    zeichnen();
+    const kasten = document.getElementById('scanner-fehler');
+    if (kasten) {
+      kasten.innerHTML = '<b>Kamera nicht verfügbar.</b><br>' + esc(err.message);
+      kasten.hidden = false;
+    }
+    scannerStatus('Kein Bild');
   }
 }
 
@@ -202,21 +205,19 @@ function scannerSchliessen() {
     scannerGriff.stoppen();
     scannerGriff = null;
   }
+  scannerVideo = null;
+  scannerWurzel.innerHTML = '';
   ui.scannerOffen = false;
-  ui.scannerFehler = null;
   if (location.pathname === '/scan') {
     history.replaceState({}, '', '/');
   }
-  zeichnen();
 }
 
 /** Ein gelesener Code — Volk suchen und direkt öffnen. */
 function codeErkannt(text) {
   const gedeutet = codeDeuten(text);
   if (!gedeutet) {
-    ui.scannerStatus = 'Code nicht lesbar — nochmal versuchen';
-    const el = document.getElementById('scanner-status');
-    if (el) el.textContent = ui.scannerStatus;
+    scannerStatus('Code nicht lesbar — nochmal versuchen');
     return;
   }
 
@@ -225,9 +226,7 @@ function codeErkannt(text) {
     : (volkNachId(gedeutet.wert) || volkNachNummer(gedeutet.wert));
 
   if (!volk) {
-    ui.scannerStatus = 'Kein Volk zu diesem Code — Etikett schon vergeben?';
-    const el = document.getElementById('scanner-status');
-    if (el) el.textContent = ui.scannerStatus;
+    scannerStatus('Kein Volk zu diesem Code — Etikett schon vergeben?');
     return;
   }
 
@@ -372,7 +371,8 @@ async function qrAnzeigen(volkId) {
 
 // ---------- Bedienung ----------
 
-wurzel.addEventListener('click', async (ereignis) => {
+// Am Dokument, nicht an #app: der Scanner liegt außerhalb davon.
+document.addEventListener('click', async (ereignis) => {
   const ziel = ereignis.target.closest('[data-aktion]');
   if (!ziel) return;
   const aktion = ziel.dataset.aktion;

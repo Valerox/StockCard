@@ -27,6 +27,11 @@
   <div class="laden">Stockkarte wird geladen …</div>
 </div>
 
+<!-- Der Scanner liegt bewusst außerhalb von #app: dort wird bei jeder Änderung
+     das gesamte HTML ersetzt, was das <video> aus dem DOM reißen und die
+     Bilderkennung auf einem eingefrorenen Standbild zurücklassen würde. -->
+<div id="scanner-wurzel"></div>
+
 <noscript>
   <div style="padding:32px;font:400 15px/1.6 system-ui,sans-serif;color:#423E37;text-align:center">
     Für die Stockkarte muss JavaScript aktiviert sein.
