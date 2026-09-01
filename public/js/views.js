@@ -629,13 +629,7 @@ export function navigation(aktiv) {
 
 // ---------- Scanner-Oberfläche ----------
 
-/**
- * Das Gerüst des Scanners. Wird beim Öffnen genau einmal erzeugt und danach
- * nicht mehr neu gezeichnet — Statustext, Fehlermeldung und Lichtknopf werden
- * an Ort und Stelle geändert. Nur so bleibt das <video>, das app.js in die
- * Bühne hängt, durchgehend im DOM und liefert weiter Bilder.
- */
-export function scannerAnsicht() {
+export function scannerAnsicht(ui) {
   return '<div class="scanner">' +
     '<div class="scanner-kopf">' +
       '<div class="scanner-titel">Stock scannen</div>' +
@@ -643,8 +637,8 @@ export function scannerAnsicht() {
     '</div>' +
     '<div class="scanner-hinweis">QR-Code am Deckel ins Bild halten — die Karte öffnet sich sofort.</div>' +
 
-    '<div class="scanner-buehne" id="scanner-buehne">' +
-      // hierhin kommt das <video>
+    '<div class="scanner-buehne">' +
+      '<video id="scanner-video" playsinline muted></video>' +
       '<div class="scanner-rahmen">' +
         '<span class="scanner-ecke scanner-ecke--lo"></span>' +
         '<span class="scanner-ecke scanner-ecke--ro"></span>' +
@@ -652,13 +646,15 @@ export function scannerAnsicht() {
         '<span class="scanner-ecke scanner-ecke--ru"></span>' +
         '<div class="scanner-linie"></div>' +
       '</div>' +
-      '<div class="scanner-status" id="scanner-status">Kamera wird geöffnet …</div>' +
+      '<div class="scanner-status" id="scanner-status">' + esc(ui.scannerStatus || 'Kamera wird geöffnet …') + '</div>' +
     '</div>' +
 
-    '<div class="scanner-fehler" id="scanner-fehler" hidden></div>' +
+    (ui.scannerFehler
+      ? '<div class="scanner-fehler"><b>Kamera nicht verfügbar.</b><br>' + esc(ui.scannerFehler) + '</div>'
+      : '') +
 
     '<div class="scanner-fuss">' +
-      '<button class="knopf knopf--gold" data-aktion="scanner-licht" id="scanner-licht" hidden>Licht an / aus</button>' +
+      (ui.scannerLicht ? '<button class="knopf knopf--gold" data-aktion="scanner-licht">Licht an / aus</button>' : '') +
       '<button class="scanner-manuell" data-aktion="scanner-manuell">' +
         'Kein QR am Stock? <span>Volk manuell wählen</span></button>' +
     '</div>' +
@@ -819,12 +815,12 @@ function sheetVolk(ui) {
     '<div class="feld">' +
       '<label class="feld-label" for="v-name">Name</label>' +
       '<input class="eingabe" id="v-name" data-behalten="v-name" data-feld="name" value="' + esc(form.name || '') + '" ' +
-        'placeholder="Weiler 9" maxlength="80">' +
+        'placeholder="Weiher 9" maxlength="80">' +
     '</div>' +
     '<div class="feld">' +
       '<label class="feld-label" for="v-stand">Stand</label>' +
       '<input class="eingabe" id="v-stand" data-behalten="v-stand" data-feld="stand" value="' + esc(form.stand || '') + '" ' +
-        'placeholder="Weiler" maxlength="80" list="stand-liste">' +
+        'placeholder="Weiher" maxlength="80" list="stand-liste">' +
       '<datalist id="stand-liste">' + staende.map((s) => '<option value="' + esc(s) + '">').join('') + '</datalist>' +
     '</div>' +
     '<div class="feld">' +

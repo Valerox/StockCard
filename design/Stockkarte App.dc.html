@@ -110,7 +110,7 @@ a:hover{color:#423E37}
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px">
       <div>
         <div style="font:500 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;color:rgba(66,62,55,.45);margin-bottom:9px">SONNTAG, 30. AUGUST</div>
-        <div style="font:400 34px/1.05 Georgia,ui-serif,serif;letter-spacing:-.01em">Guten Morgen,<br>Imkerei Weiler.</div>
+        <div style="font:400 34px/1.05 Georgia,ui-serif,serif;letter-spacing:-.01em">Guten Morgen,<br>Imkerei Weiher.</div>
       </div>
       <div style="width:38px;height:38px;border-radius:99px;background:#423E37;color:#F7F2E8;display:flex;align-items:center;justify-content:center;font:500 13px/1 ui-monospace,Menlo,Consolas,monospace;flex:none;margin-top:14px">MW</div>
     </div>
@@ -196,7 +196,7 @@ a:hover{color:#423E37}
     </div>
     <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">
       <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#423E37;color:#F7F2E8">Alle · 12</span>
-      <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)">Weiler · 7</span>
+      <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)">Weiher · 7</span>
       <span style="font:500 11.5px/1 system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:99px;background:#FFFCF5;border:1px solid rgba(66,62,55,.14);color:rgba(66,62,55,.7)">Hausgarten · 5</span>
     </div>
   </div>
@@ -495,10 +495,10 @@ const MARKS = [
 ];
 
 const VOELKER = [
-  { nr: '9', name: 'Weiler 9', stand: 'Weiler', status: 'Volk tot', letzte: '29.8.', tage: '2 T' },
-  { nr: '1', name: 'Weiler 1', stand: 'Weiler', status: 'stark', letzte: '12.8.', tage: '18 T' },
-  { nr: '2', name: 'Weiler 2', stand: 'Weiler', status: 'stark', letzte: '20.8.', tage: '10 T' },
-  { nr: '3', name: 'Weiler 3', stand: 'Weiler', status: 'schwach', letzte: '2.8.', tage: '28 T' },
+  { nr: '9', name: 'Weiher 9', stand: 'Weiher', status: 'Volk tot', letzte: '29.8.', tage: '2 T' },
+  { nr: '1', name: 'Weiher 1', stand: 'Weiher', status: 'stark', letzte: '12.8.', tage: '18 T' },
+  { nr: '2', name: 'Weiher 2', stand: 'Weiher', status: 'stark', letzte: '20.8.', tage: '10 T' },
+  { nr: '3', name: 'Weiher 3', stand: 'Weiher', status: 'schwach', letzte: '2.8.', tage: '28 T' },
   { nr: '4', name: 'Hausgarten 4', stand: 'Hausgarten', status: 'stark', letzte: '24.8.', tage: '6 T' },
   { nr: '5', name: 'Hausgarten 5', stand: 'Hausgarten', status: 'Ableger', letzte: '21.8.', tage: '9 T' },
   { nr: '6', name: 'Hausgarten 6', stand: 'Hausgarten', status: 'stark', letzte: '14.8.', tage: '16 T' },
@@ -659,8 +659,8 @@ class Component extends DCLogic {
         open: () => this.open(v.nr),
       })),
       faellig: [
-        { nr: '3', name: 'Weiler 3', hint: 'schwach · Futter prüfen', tage: '28 T', open: () => this.open('3') },
-        { nr: '1', name: 'Weiler 1', hint: 'Behandlung 2026 fehlt', tage: '18 T', open: () => this.open('1') },
+        { nr: '3', name: 'Weiher 3', hint: 'schwach · Futter prüfen', tage: '28 T', open: () => this.open('3') },
+        { nr: '1', name: 'Weiher 1', hint: 'Behandlung 2026 fehlt', tage: '18 T', open: () => this.open('1') },
         { nr: '6', name: 'Hausgarten 6', hint: 'Winterfutter offen', tage: '16 T', open: () => this.open('6') },
       ],
       recent: [
@@ -669,12 +669,12 @@ class Component extends DCLogic {
         { datum: '21.8.', text: 'Volk 5 — Ableger, 2,5 kg Futter' },
       ],
 
-      doScan: () => { this.open('9'); this.toast('Volk 9 · Weiler erkannt'); },
+      doScan: () => { this.open('9'); this.toast('Volk 9 · Weiher erkannt'); },
 
       sheetOpen: this.state.sheet,
       openSheet: () => this.setState({ sheet: true }),
       closeSheet: () => this.setState({ sheet: false }),
-      heuteLabel: 'SO 30.8.2026 · 09:14 · GPS WEILER',
+      heuteLabel: 'SO 30.8.2026 · 09:14 · GPS Weiher',
       formMarks, futterOpts, notizChips,
       notizText: this.state.notiz || 'Kurz notieren …',
       notizColor: this.state.notiz ? '#423E37' : 'rgba(66,62,55,.38)',

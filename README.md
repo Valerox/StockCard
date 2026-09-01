@@ -7,6 +7,7 @@ am Deckel, der die richtige Karte sofort öffnet.
 Läuft auf einem Raspberry Pi. Die Daten liegen als eine lesbare JSON-Datei auf
 der SD-Karte, ohne Datenbank.
 
+sffzzfke4rvd
 ---
 
 ## Was die App kann

@@ -12,10 +12,10 @@ const ops = require('./ops');
 const JAHR = 2026;
 
 const VOELKER = [
-  { id: 'v9', nr: '9', name: 'Weiler 9', stand: 'Weiler', status: 'Volk tot', koeniginJahr: 2024 },
-  { id: 'v1', nr: '1', name: 'Weiler 1', stand: 'Weiler', status: 'stark', koeniginJahr: 2025 },
-  { id: 'v2', nr: '2', name: 'Weiler 2', stand: 'Weiler', status: 'stark', koeniginJahr: 2025 },
-  { id: 'v3', nr: '3', name: 'Weiler 3', stand: 'Weiler', status: 'schwach', koeniginJahr: 2024 },
+  { id: 'v9', nr: '9', name: 'Weiher 9', stand: 'Weiher', status: 'Volk tot', koeniginJahr: 2024 },
+  { id: 'v1', nr: '1', name: 'Weiher 1', stand: 'Weiher', status: 'stark', koeniginJahr: 2025 },
+  { id: 'v2', nr: '2', name: 'Weiher 2', stand: 'Weiher', status: 'stark', koeniginJahr: 2025 },
+  { id: 'v3', nr: '3', name: 'Weiher 3', stand: 'Weiher', status: 'schwach', koeniginJahr: 2024 },
   { id: 'v4', nr: '4', name: 'Hausgarten 4', stand: 'Hausgarten', status: 'stark', koeniginJahr: 2026 },
   { id: 'v5', nr: '5', name: 'Hausgarten 5', stand: 'Hausgarten', status: 'Ableger', koeniginJahr: 2026 },
   { id: 'v6', nr: '6', name: 'Hausgarten 6', stand: 'Hausgarten', status: 'stark', koeniginJahr: 2025 },
@@ -84,9 +84,9 @@ async function main() {
     }
 
     const liste = [];
-    liste.push({ id: opId(), type: 'settings.update', data: { imkerei: 'Imkerei Weiler', kuerzel: 'MW' } });
+    liste.push({ id: opId(), type: 'settings.update', data: { imkerei: 'Imkerei Weiher', kuerzel: 'MW' } });
 
-    for (const name of ['Weiler', 'Hausgarten']) {
+    for (const name of ['Weiher', 'Hausgarten']) {
       liste.push({ id: opId(), type: 'stand.create', data: { id: name.toLowerCase(), name: name } });
     }
     for (const v of VOELKER) {
